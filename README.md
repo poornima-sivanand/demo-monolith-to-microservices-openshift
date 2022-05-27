@@ -200,4 +200,62 @@ Workflow 3 – Clean : It is highly recommended to have a clean workflow to ensu
 - Environments in github settings for setting reviewers before deployment to dev, test and prod environments.
 
 
-#### Reference : https://github.com/jrdalino/aws-ecs-monolith-to-microservices-workshop
+## FAQs
+
+### 1. How do we put our code into an OpenShift pod?
+
+Step 1: Build code locally
+
+Step 2: Ensure code works within a container
+
+Step 2.a: Based on your code and language, choose image from docker registry
+
+Step 2.b: Pull Image from registry
+
+Step 2.c: Copy code to Image
+
+Step 2.d: Change container command if you need to 
+
+Step 2.e: Create new Image
+
+Step 2.f: Run image as container and check if your code runs
+
+Step 3: Choose an OpenShift Image from the Red Hat Registry
+
+Step 3.a: First look for an s2i image
+
+Step 3.b: Write a Build template and a deployment template (yaml or json because that’s what OpenShift understands)
+
+Step 3.c: Use the OpenShift Console or command line to build the container image and then run (deploy) it on OpenShift
+
+###  2. Why is the OpenShift Image Registry Preferred?
+
+It offers better security and enterprise grade images as well as an option known as source-to-image conversion where you don’t need to write a dockerfile 
+
+### 3. What does a build template contain?
+
+- Source Image to be used from docker or RedHat registry
+
+- Destination Image metadata
+
+- Build Config : How is the Destination image built from the source image, does it get the code from GitHub (s2i), is the image modified(dockerfile), is the code obtained from a local machine? How much resources are needed for the build?
+
+### 4. What if an s2i image doesn’t do its job for us?
+
+You will need to then modify an s2i image or a docker image using a dockerfile and use that docker image to build your code
+
+### 5. What does a deployment template contain?
+
+- Image to be deployed
+
+- Deployment Config: Environmental Variables, startup commands if any, storage volumes if any, number of replicas for availability, rules for deployment (rolling or recreate), health checks, CPU and memory utilization in terms of request and limits
+
+- Service: A Kubernetes service serves as an internal load balancer. It identifies a set of replicated pods in order to proxy the connections it receives to them. Services are assigned an IP address and port pair that, when accessed, proxy to an appropriate backing pod. A service uses a label selector to find all the containers running that provide a certain network service on a certain port.
+
+- Routes: An OpenShift Container Platform route exposes a service at a host name, such as www.example.com, so that external clients can reach it by name.
+
+#### References 
+
+- https://github.com/jrdalino/aws-ecs-monolith-to-microservices-workshop
+- https://developers.redhat.com/download-manager/file/ContainerColoringBook.pdf
+
