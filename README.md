@@ -70,8 +70,36 @@ oc new-project demo-tools
 oc new-project demo-dev
 ```
 
-Step 4: 
+Step 4: Once logged in to the openshift namespace/crc namespace, execute the following commands:
+Note: 'replace the route host in line 60 of monolith/openshift/deploy.yaml with the appropriate value'
+Note: 'replace the namespace value in line 151 of monolith/openshift/deploy.yaml with the appropriate value'
+Note: 'replace the route host in line 60 of monolith/openshift/deploy.yaml with the appropriate value'
+Note: 'replace the GIT BRANCH and GIT URL values in line 99 and 102 of monolith/openshift/build.yaml with the appropriate value'
 
+```
+   # Import the Image
+   oc -n <tools-namespace> import-image ubi9/nodejs-16:1-36 --from=registry.access.redhat.com/ubi9/nodejs-16:1-36 --confirm
+
+   # Build the Monolith App Image
+   oc -n <tools-namespace> process -f monolith/openshift/build.yaml | oc -n <tools-namespace> apply -f -
+
+   # Tag the Image in the Dev Namespace
+   oc tag <tools-namespace>/demo-monolith:1.0 <dev-namespace>/demo-monolith:1.0
+
+   # Deploy the Image in the Dev Namespace
+   oc -n <dev-namespace> process -f monolith/openshift/deploy.yaml| oc -n <dev-namespace> apply -f -
+
+```
+
+Step 5: Test using the following commands:
+
+```
+  curl http://<route-host>/api/users/
+  curl http://<route-host>/api/users/1
+  curl http://<route-host>/api/threads
+  curl http://<route-host>/api/threads/1
+  curl http://<route-host>/api/posts/by-user/1
+```
 
 # Microservices App
 
