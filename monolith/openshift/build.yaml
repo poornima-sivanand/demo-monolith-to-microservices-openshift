@@ -20,7 +20,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: ${NAME}${SUFFIX}
+  name: ${NAME}
 objects:
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
@@ -55,15 +55,15 @@ objects:
     apiVersion: build.openshift.io/v1
     metadata:
       labels:
-        build: ${NAME}${SUFFIX}
-      name: ${NAME}${SUFFIX}
+        build: ${NAME}
+      name: ${NAME}
     spec:
       failedBuildsHistoryLimit: 5
       nodeSelector: null
       output:
         to:
           kind: ImageStreamTag
-          name: "${NAME}:${VERSION}"
+          name: "${NAME}:1.0"
       postCommit: {}
       resources:
         limits:
@@ -74,7 +74,7 @@ objects:
           memory: "2Gi"
       runPolicy: Serial
       source:
-        contextDir: app/client
+        contextDir: monolith/
         git:
           ref: ${GIT_BRANCH}
           uri: ${GIT_URL}
@@ -93,16 +93,19 @@ objects:
 parameters:
   - name: NAME
     required: true
-    value: hwp-client
+    value: demo-monolith
   - name: GIT_BRANCH
     required: true
+    value: main
   - name: GIT_URL
     required: true
-    value: https://github.com/bcgov/CITZ-HybridWorkplace.git
+    value: https://github.com/poornima-sivanand/demo-microservices-openshift.git
     description: version as an image tag
-  - name: VERSION
-    required: true
-    description: version as an image tag
-  - name: SUFFIX
-    required: true
-    description: version as an image tag
+  # - name: VERSION
+  #   required: true
+  #   value: 1.0
+  #   description: version as an image tag
+  # - name: SUFFIX
+  #   required: true
+  #   description: version as an image tag
+  #   value: -dev-1.0

@@ -1,6 +1,7 @@
 const app = require('koa')();
 const router = require('koa-router')();
 const db = require('./db.json');
+const port = process.env.PORT
 
 // Log requests
 app.use(function *(next){
@@ -49,4 +50,4 @@ router.get('/', function *() {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(port);
