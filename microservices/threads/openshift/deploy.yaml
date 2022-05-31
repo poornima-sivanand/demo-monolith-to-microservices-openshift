@@ -145,7 +145,7 @@ parameters:
     description: service open port
   - name: NAME
     required: true
-    value: demo-monolith
+    value: threads
   - name: NAMESPACE
     required: true
     value: adccd1-dev

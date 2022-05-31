@@ -93,7 +93,7 @@ objects:
 parameters:
   - name: NAME
     required: true
-    value: demo-monolith
+    value: threads
   - name: GIT_BRANCH
     required: true
     value: main
