@@ -54,6 +54,7 @@ jobs:
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
           oc -n e34374-tools import-image ubi9/nodejs-16:1-36 --from=registry.access.redhat.com/ubi9/nodejs-16:1-36 --confirm
           oc -n e34374-tools process -f openshift/build.yaml | oc -n e34374-tools apply -f - --wait
+          oc logs buildconfig demo-monolith-1 --follow
 
         env:
           CI: "true"
