@@ -53,9 +53,9 @@ jobs:
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
       # Import the Image 
-          oc -n <tools-namespace> import-image ubi9/nodejs-16:1-36 --from=registry.access.redhat.com/ubi9/nodejs-16:1-36 --confirm
+          oc -n e34374-tools import-image ubi9/nodejs-16:1-36 --from=registry.access.redhat.com/ubi9/nodejs-16:1-36 --confirm
       # Build the Monolith App Image
-          oc -n <tools-namespace> process -f monolith/openshift/build.yaml | oc -n <tools-namespace> apply -f - --wait
+          oc -n e34374-tools process -f monolith/openshift/build.yaml | oc -n e34374-tools apply -f - --wait
         env:
           CI: "true"
 
@@ -82,9 +82,9 @@ jobs:
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
         # Tag the Image in the Dev Namespace
-          oc tag <tools-namespace>/demo-monolith:1.0 <dev-namespace>/demo-monolith:1.0
+          oc tag e34374-tools/demo-monolith:1.0 e34374-dev/demo-monolith:1.0
         # Deploy the Image in the Dev Namespace
-          oc -n <dev-namespace> process -f monolith/openshift/deploy.yaml| oc -n <dev-namespace> apply -f -
+          oc -n e34374-dev process -f monolith/openshift/deploy.yaml| oc -n e34374-dev apply -f -
 
   deploy-to-test:
     needs: [build,deploy-to-dev]
@@ -105,9 +105,9 @@ jobs:
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
         # Tag the Image in the Dev Namespace
-          oc tag <tools-namespace>/demo-monolith:1.0 <test-namespace>/demo-monolith:1.0
+          oc tag e34374-tools/demo-monolith:1.0 e34374-test/demo-monolith:1.0
         # Deploy the Image in the Dev Namespace
-          oc -n <test-namespace> process -f monolith/openshift/deploy.yaml| oc -n <test-namespace> apply -f -
+          oc -n e34374-test process -f monolith/openshift/deploy.yaml| oc -n e34374-test apply -f -
   
   deploy-to-prod:
     needs: [build,deploy-to-dev, deploy-to-test]
@@ -128,6 +128,6 @@ jobs:
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL}}
         # Tag the Image in the Dev Namespace
-          oc tag <tools-namespace>/demo-monolith:1.0 <prod-namespace>/demo-monolith:1.0
+          oc tag e34374-tools/demo-monolith:1.0 e34374-prod/demo-monolith:1.0
         # Deploy the Image in the Dev Namespace
-          oc -n <prod-namespace> process -f monolith/openshift/deploy.yaml| oc -n <prod-namespace> apply -f -
+          oc -n e34374-prod process -f monolith/openshift/deploy.yaml| oc -n e34374-prod apply -f -
