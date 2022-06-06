@@ -11,7 +11,7 @@ on:
   
 defaults:
   run:
-    working-directory: ./app
+    working-directory: ./monolith
 
 jobs:
   # test:
@@ -42,18 +42,19 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app/.pipeline
+        working-directory: ./monolith
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
       - name: Build
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
-      # Import the Image 
           oc -n e34374-tools import-image ubi9/nodejs-16:1-36 --from=registry.access.redhat.com/ubi9/nodejs-16:1-36 --confirm
-      # Build the Monolith App Image
-          oc -n e34374-tools process -f monolith/openshift/build.yaml | oc -n e34374-tools apply -f - --wait
+          oc -n e34374-tools process -f openshift/build.yaml | oc -n e34374-tools apply -f - --wait
+
         env:
           CI: "true"
 
@@ -62,7 +63,7 @@ jobs:
     needs: [build]
     defaults:
       run:
-        working-directory: ./app/.pipeline
+        working-directory: ./monolith
     steps:
 
       # Build the image using the specified build config
@@ -73,14 +74,14 @@ jobs:
       # ------------------------------------------------
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
-        # Tag the Image in the Dev Namespace
           oc tag e34374-tools/demo-monolith:1.0 e34374-dev/demo-monolith:1.0
-        # Deploy the Image in the Dev Namespace
-          oc -n e34374-dev process -f monolith/openshift/deploy.yaml| oc -n e34374-dev apply -f -
+          oc -n e34374-dev process -f openshift/deploy.yaml | oc -n e34374-dev apply -f - --wait
 
   deploy-to-test:
     needs: [build,deploy-to-dev]
@@ -89,19 +90,19 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app/.pipeline
+        working-directory: ./monolith
     steps:
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
-        # Tag the Image in the Dev Namespace
           oc tag e34374-tools/demo-monolith:1.0 e34374-test/demo-monolith:1.0
-        # Deploy the Image in the Dev Namespace
-          oc -n e34374-test process -f monolith/openshift/deploy.yaml| oc -n e34374-test apply -f -
+          oc -n e34374-test process -f openshift/deploy.yaml | oc -n e34374-test apply -f - --wait
   
   deploy-to-prod:
     needs: [build,deploy-to-dev, deploy-to-test]
@@ -110,16 +111,16 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app/.pipeline
+        working-directory: ./monolith
     steps:
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL}}
-        # Tag the Image in the Dev Namespace
           oc tag e34374-tools/demo-monolith:1.0 e34374-prod/demo-monolith:1.0
-        # Deploy the Image in the Dev Namespace
-          oc -n e34374-prod process -f monolith/openshift/deploy.yaml| oc -n e34374-prod apply -f -
+          oc -n e34374-prod process -f openshift/deploy.yaml | oc -n e34374-prod apply -f - --wait
