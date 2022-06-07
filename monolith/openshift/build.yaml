@@ -103,9 +103,7 @@ parameters:
     description: version as an image tag
   - name: VERSION
     required: true
-    value: 1.0
     description: version as an image tag
   - name: SUFFIX
     required: true
     description: version as an image tag
-    value: -dev-1.0
