@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./monolith/.pipeline
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -41,7 +41,7 @@ jobs:
     needs: [build]
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./monolith/.pipeline
     steps:
 
       # Build the image using the specified build config
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./monolith/.pipeline
     steps:
 
       - uses: actions/checkout@v1
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./monolith/.pipeline
     steps:
 
       - uses: actions/checkout@v1
