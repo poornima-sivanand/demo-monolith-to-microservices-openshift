@@ -1,6 +1,6 @@
 #This is a basic workflow to help you get started with Actions
 
-name: CI-CD-monolith
+name: CI-CD-microservice-threads
 
 # Controls when the action will run. 
 on:
@@ -9,18 +9,18 @@ on:
     branches: 
       - 'main' 
   paths:
-      - './monolith'
+      - './microservices/threads'
   
 defaults:
   run:
-    working-directory: ./monolith
+    working-directory: ./microservices/threads
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./microservices/threads
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -40,7 +40,7 @@ jobs:
     needs: [build]
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./microservices/threads
     steps:
 
       # Build the image using the specified build config
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./microservices/threads
     steps:
 
       - uses: actions/checkout@v1
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./monolith
+        working-directory: ./microservices/threads
     steps:
 
       - uses: actions/checkout@v1
