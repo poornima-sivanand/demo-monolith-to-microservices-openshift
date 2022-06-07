@@ -57,7 +57,7 @@ objects:
       labels:
         app: "${NAME}"
     spec:
-      host: "${NAME}.${NAMESPACE}.apps.silver.devops.gov.bc.ca"
+      host: "${NAME}.${NAMESPACE}.apps.klab.devops.gov.bc.ca"
       port:
         targetPort: ${PORT}-tcp
       path: ''
@@ -148,7 +148,7 @@ parameters:
     value: demo-monolith
   - name: NAMESPACE
     required: true
-    value: adccd1-dev
+    value: e34374-dev
   # - name: MONGODB_USER
   #   required: true
   # - name: MONGODB_PASSWORD
