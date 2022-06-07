@@ -20,7 +20,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: ${NAME}
+  name: ${NAME}${SUFFIX}
 objects:
   - kind: ImageStream
     apiVersion: image.openshift.io/v1
@@ -55,15 +55,15 @@ objects:
     apiVersion: build.openshift.io/v1
     metadata:
       labels:
-        build: ${NAME}
-      name: ${NAME}
+        build: ${NAME}${SUFFIX}
+      name: ${NAME}${SUFFIX}
     spec:
       failedBuildsHistoryLimit: 5
       nodeSelector: null
       output:
         to:
           kind: ImageStreamTag
-          name: "${NAME}:1.0"
+          name: "${NAME}:${VERSION}"
       postCommit: {}
       resources:
         limits:
