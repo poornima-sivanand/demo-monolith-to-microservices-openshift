@@ -52,9 +52,9 @@ jobs:
       # ------------------------------------------------
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-      - uses: mshick/add-pr-comment@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
           message: |
             ** DEV URL : https://demo-monolith-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
@@ -80,6 +80,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
+        with:
           message: |
             ** TEST URL : https://demo-monolith-test-${{ github.event.pull_request.number }}.e34374-test.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
@@ -105,6 +107,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
+        with:
           message: |
             ** PROD URL : https://demo-monolith.apps.klab.devops.gov.bc.ca/api **
             repo-token: ${{ secrets.PR_TOKEN }}
