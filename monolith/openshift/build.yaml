@@ -101,11 +101,11 @@ parameters:
     required: true
     value: https://github.com/poornima-sivanand/demo-microservices-openshift.git
     description: version as an image tag
-  # - name: VERSION
-  #   required: true
-  #   value: 1.0
-  #   description: version as an image tag
-  # - name: SUFFIX
-  #   required: true
-  #   description: version as an image tag
-  #   value: -dev-1.0
+  - name: VERSION
+    required: true
+    value: 1.0
+    description: version as an image tag
+  - name: SUFFIX
+    required: true
+    description: version as an image tag
+    value: -dev-1.0

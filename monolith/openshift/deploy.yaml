@@ -155,9 +155,9 @@ parameters:
   #   required: true
   # - name: MONGODB_MAIN
   #   required: true
-  # - name: VERSION
-  #   required: true
-  #   description: version as an image tag
-  # - name: SUFFIX
-  #   required: false
-  #   description: version as an image tag
+  - name: VERSION
+    required: true
+    description: version as an image tag
+  - name: SUFFIX
+    required: false
+    description: version as an image tag
