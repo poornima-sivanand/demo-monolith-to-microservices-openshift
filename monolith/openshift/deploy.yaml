@@ -20,7 +20,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: ${NAME}
+  name: ${NAME}${SUFFIX}
   annotations:
     description: Deployment template for a nodejs server and postgres db.
     tags: node
@@ -38,7 +38,7 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       annotations:
         description: Exposes and load balances the application pods
       labels:
@@ -49,30 +49,30 @@ objects:
           port: ${{PORT}}
           targetPort: ${{PORT}}
       selector:
-        deploymentconfig: ${NAME}
+        deploymentconfig: ${NAME}${SUFFIX}
   - kind: Route
     apiVersion: v1
     metadata:
-      name: "${NAME}"
+      name: "${NAME}${SUFFIX}"
       labels:
-        app: "${NAME}"
+        app: "${NAME}${SUFFIX}"
     spec:
-      host: "${NAME}.${NAMESPACE}.apps.klab.devops.gov.bc.ca"
+      host: "${NAME}${SUFFIX}.${NAMESPACE}.apps.klab.devops.gov.bc.ca"
       port:
         targetPort: ${PORT}-tcp
-      path: ''
+      path: '/api'
       to:
         kind: Service
-        name: "${NAME}"
+        name: "${NAME}${SUFFIX}"
         weight: 100
       tls:
         termination: edge
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
-        app: ${NAME}
+        app: ${NAME}${SUFFIX}
       annotations:
         description: Defines how to deploy the application server
     spec:
@@ -86,7 +86,7 @@ objects:
               - ${NAME}
             from:
               kind: ImageStreamTag
-              name: "${NAME}:1.0"
+              name: "${NAME}:${VERSION}"
         - type: ConfigChange
       replicas: 1
       selector:
@@ -155,9 +155,9 @@ parameters:
   #   required: true
   # - name: MONGODB_MAIN
   #   required: true
-  # - name: VERSION
-  #   required: true
-  #   description: version as an image tag
-  # - name: SUFFIX
-  #   required: false
-  #   description: version as an image tag
+  - name: VERSION
+    required: true
+    description: version as an image tag
+  - name: SUFFIX
+    required: false
+    description: version as an image tag
