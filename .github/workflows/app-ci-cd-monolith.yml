@@ -61,7 +61,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** DEV URL : https://demo-monolith-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api **
+            ** Monolith DEV URL : https://demo-monolith-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
@@ -88,7 +88,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** TEST URL : https://demo-monolith-test.e34374-test.apps.klab.devops.gov.bc.ca/api **
+            ** Monolith TEST URL : https://demo-monolith-test.e34374-test.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
@@ -115,7 +115,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** PROD URL : https://demo-monolith.e34374-prod.apps.klab.devops.gov.bc.ca/api **
+            ** Monolith PROD URL : https://demo-monolith.e34374-prod.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
