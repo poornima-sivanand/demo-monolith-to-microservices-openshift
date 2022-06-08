@@ -115,7 +115,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** PROD URL : https://demo-monolith.apps.klab.devops.gov.bc.ca/api **
+            ** PROD URL : https://demo-monolith.e34374-test.apps.klab.devops.gov.bc.ca/api **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
