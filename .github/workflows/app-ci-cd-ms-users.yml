@@ -61,7 +61,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** DEV URL : https://users-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api **
+            ** Users Microservice DEV URL : https://users-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api/users **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
@@ -88,7 +88,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** TEST URL : https://users-test.e34374-test.apps.klab.devops.gov.bc.ca/api **
+            ** Users Microservice TEST URL : https://users-test.e34374-test.apps.klab.devops.gov.bc.ca/api/users **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
@@ -115,7 +115,7 @@ jobs:
       - uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ** PROD URL : https://users.e34374-prod.apps.klab.devops.gov.bc.ca/api **
+            ** Users Microservice PROD URL : https://users.e34374-prod.apps.klab.devops.gov.bc.ca/api/users **
           repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
