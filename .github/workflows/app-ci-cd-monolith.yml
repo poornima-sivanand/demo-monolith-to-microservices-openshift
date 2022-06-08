@@ -116,7 +116,7 @@ jobs:
         with:
           message: |
             ** PROD URL : https://demo-monolith.apps.klab.devops.gov.bc.ca/api **
-            repo-token: ${{ secrets.PR_TOKEN }}
+          repo-token: ${{ secrets.PR_TOKEN }}
 
       - name: Deploy the image
         run: |
