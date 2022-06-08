@@ -1,6 +1,6 @@
 #This is a basic workflow to help you get started with Actions
 
-name: CI-CD-microservice-posts
+name: CI-CD-microservices-posts
 
 # Controls when the action will run. 
 on:
@@ -8,9 +8,14 @@ on:
   pull_request:
     branches: 
       - 'main' 
+  push:
     paths:
-      - './microservices/posts'
-  
+      - './microsevices/posts/**/*'
+
+concurrency: 
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     working-directory: ./microservices/posts
@@ -20,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./microservices/posts
+        working-directory: ./microservices/posts/.pipeline
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
@@ -40,7 +45,7 @@ jobs:
     needs: [build]
     defaults:
       run:
-        working-directory: ./microservices/posts
+        working-directory: ./microservices/posts/.pipeline
     steps:
 
       # Build the image using the specified build config
@@ -53,12 +58,18 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ** DEV URL : https://posts-dev-${{ github.event.pull_request.number }}.e34374-dev.apps.klab.devops.gov.bc.ca/api **
+          repo-token: ${{ secrets.PR_TOKEN }}
+
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
           npm ci
-          DEBUG=* npm run dev -- --pr=${{ github.event.pull_request.number }} --env=dev --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}
+          DEBUG=* npm run deploy -- --pr=${{ github.event.pull_request.number }} --env=dev --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}
 
   deploy-to-test:
     needs: [build,deploy-to-dev]
@@ -67,19 +78,25 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./microservices/posts
+        working-directory: ./microservices/posts/.pipeline
     steps:
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ** TEST URL : https://posts-test.e34374-test.apps.klab.devops.gov.bc.ca/api **
+          repo-token: ${{ secrets.PR_TOKEN }}
+
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL }}
           npm ci
-          DEBUG=* npm run dev -- --pr=${{ github.event.pull_request.number }} --env=test --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}
+          DEBUG=* npm run deploy -- --pr=${{ github.event.pull_request.number }} --env=test --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}
   
   deploy-to-prod:
     needs: [build,deploy-to-dev, deploy-to-test]
@@ -88,16 +105,22 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./microservices/posts
+        working-directory: ./microservices/posts/.pipeline
     steps:
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: "12"
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ** PROD URL : https://posts.e34374-prod.apps.klab.devops.gov.bc.ca/api **
+          repo-token: ${{ secrets.PR_TOKEN }}
+
       - name: Deploy the image
         run: |
           oc version
           oc login --token=${{ secrets.OPENSHIFT_TOKEN}} --server=${{ secrets.OPENSHIFT_URL}}
           npm ci
-          DEBUG=* npm run dev -- --pr=${{ github.event.pull_request.number }} --env=prod --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}
+          DEBUG=* npm run deploy -- --pr=${{ github.event.pull_request.number }} --env=prod --git.branch.name=${{github.head_ref}} --git.ref=${{github.head_ref}}

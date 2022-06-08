@@ -16,13 +16,10 @@ module.exports = (settings)=>{
 
   objects.push(...oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/deploy.yaml`, {
     'param':{
-      'NAME': `${phases[phase].name}-server`,
+      'NAME': phases[phase].name,
       'SUFFIX': phases[phase].suffix,
       'VERSION': phases[phase].tag,
-      'NAMESPACE': phases[phase].namespace,
-      'MONGODB_USER': mongoCredential['user'],
-      'MONGODB_PASSWORD': mongoCredential['pass'],
-      'MONGODB_MAIN' : 'TheNeighborhood'
+      'NAMESPACE': phases[phase].namespace
     }
   }))
 
