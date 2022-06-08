@@ -11,7 +11,11 @@ on:
   push:
     paths:
       - './monolith/**/*'
-  
+
+concurrency: 
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     working-directory: ./monolith
