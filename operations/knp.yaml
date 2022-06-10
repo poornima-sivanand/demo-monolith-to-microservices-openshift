@@ -59,42 +59,19 @@ objects:
       podSelector: {}
       policyTypes:
         - Ingress
-  - kind: NetworkPolicy
-    apiVersion: networking.k8s.io/v1
-    metadata:
-      name: allow-app-to-mongo
-    spec:
-      # Allow the API to talk to the patroni
-      # database cluster on the given port.
-      podSelector:
-        name: mongodb
-      ingress:
-        - from:
-            - podSelector:
-                matchLabels:
-                  app: rdsi
-          ports:
-            - protocol: TCP
-              port: 27017
 
-
-  - kind: NetworkPolicy
-    apiVersion: networking.k8s.io/v1
-    metadata:
-      name: allow-api-to-nats
-    spec:
-      # Allow the API to talk to NATS. This policy really only
-      # applies to dev and test. No impact in prod.
-      podSelector:
-        matchLabels:
-          role: nats
-      ingress:
-        - from:
-            - podSelector:
-                name: mongodb
-          ports:
-            - protocol: TCP
-              port: 27017
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
+  metadata:
+    name: allow-traffic-from-gateway-to-your-api
+  spec:
+    podSelector: {}
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                environment: test
+                name: 264e6f
 parameters:
   - name: NAMESPACE
     displayName: Namespace
