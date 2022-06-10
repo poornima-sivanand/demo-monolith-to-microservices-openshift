@@ -13,7 +13,7 @@ module.exports = (settings)=>{
 
   objects.push(...oc.processDeploymentTemplate(`${templatesLocalBaseUrl}/build.yaml`, {
     'param':{
-      'NAME': `${phases[phase].name}-server`,
+      'NAME': phases[phase].name,
       'SUFFIX': phases[phase].suffix,
       'VERSION': phases[phase].tag,
       'GIT_URL': oc.git.url,
