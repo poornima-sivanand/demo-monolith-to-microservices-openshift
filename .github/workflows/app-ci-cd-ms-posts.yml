@@ -5,13 +5,9 @@ name: CI-CD-microservices-posts
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
+  pull_request:
     branches: 
-      - '*' 
-    paths-ignore:
-      - './microsevices/threads/**/*'
-      - './microsevices/users/**/*'
-      - './monolith/**/*'
+      - 'main'
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}

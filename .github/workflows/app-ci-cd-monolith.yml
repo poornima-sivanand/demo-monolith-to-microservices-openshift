@@ -8,13 +8,6 @@ on:
   pull_request:
     branches: 
       - 'main'
-  push:
-    branches:
-      - '*'
-    paths-ignore:
-      - './microsevices/threads/**/*'
-      - './microsevices/users/**/*'
-      - './monolith/**/*'
 
 
 concurrency: 
