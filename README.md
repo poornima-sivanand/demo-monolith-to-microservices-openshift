@@ -210,7 +210,21 @@ Workflow 3 – Clean : It is highly recommended to have a clean workflow to ensu
 
 - Environments in github settings for setting reviewers before deployment to dev, test and prod environments.
 
+###  Overview on Github Actions Workflows
 
+- There are five workflows configured, one each for the monolith and the 3 microservices and one for a clean up. These workflows are currently triggered when a pull request is created to the main branch. In case if the pull request is updated, concurrrent runs of the workflows will be cancelled automatically
+- The CI-CD workflows are based on continuous delivery principles and would build the image once and deploy it in dev, test and prod namespaces on openshift. The deployment to dev happens automatically. However, deployments to test and prod happen based on a review process. 
+- The workflows are also configured to automatically comment the URLs/routes for testing in each environment which make the review process easier since the reviewer on GitHub doesnt need to go to the OpenShift console to check the routes.
+- Once the PR is merged or closed, the clean workflow runs which cleans up the tools, dev and test namespace on OpenShift to optimize resource utilization.
+- All deployments are done using ![pipeline-cli](https://www.npmjs.com/package/@bcgov/pipeline-cli). Pipeline-cli is an npm based tool that is used to abstract openshift commands to make it easier to build and deploy on openshift using a single command line which is platform independent meaning, the same command can be used to build and deploy irrespective of which tool you use for CI/CD.
+
+
+### Next Steps
+
+- Ideally, each github workflow should run only when changes are made to the specific folder. Github actions currently doesnt provide a direct method to do this, so work is in progress to implement this functionality.
+- Currently all three microservices are served at different endpoints, configurations are underway to obtain a single API gateway endpoint for all three microservices.
+
+Let us know if you need to see any new features through a pull request.
 
 ## FAQs
 
