@@ -74,7 +74,7 @@ objects:
           memory: "2Gi"
       runPolicy: Serial
       source:
-        contextDir: microservices/apache-reverse-proxy/docker
+        contextDir: microservices/apache-reverse-proxy/openshift/docker
         git:
           ref: ${GIT_BRANCH}
           uri: ${GIT_URL}
