@@ -180,7 +180,21 @@ $ curl localhost:3003/api/users/1
 $ curl localhost:3002/api/threads
 $ curl localhost:3002/api/threads/1
 $ curl localhost:3001/api/posts/by-user/1
+
 ```
+
+## Running the microservices on OpenShift
+
+There are OpenShift namespaces set up for this project and Github Workflows established for CI/CD.
+Since there are 3 microservices, an API gateway config is required for routing requests. The BC Gov API Gateway service is used in this scenario, however, the kong gateway doesnt support path based routing therefore and Apache Reverse Proxy server has been setup to redirect requests.
+
+### Apache Reverse Proxy Config
+
+Step 1: 
+```
+oc import-image rhscl/httpd-24-rhel7:2.4-200 --from=registry.access.redhat.com/rhscl/httpd-24-rhel7:2.4-200 --confirm
+```
+Step 2:
 
 ## CI-CD
 
