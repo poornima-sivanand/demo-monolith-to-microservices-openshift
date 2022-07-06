@@ -1,58 +1,21 @@
-export NS="demo-microserv"
-#export NAME="demo-microservices-app"
-echo "
 services:
-- name: posts
-  host: httpbin.org
-  tags: [ ns.$NS ]
-  port: 8000
-  protocol: https
-  retries: 0
-  routes:
-  - name: posts-route
-    tags: [ ns.$NS ]
-    hosts:
-    - posts.e34374-prod.apps.klab.devops.gov.bc.ca
-    paths:
-    - /api
-    methods:
-    - GET
-    strip_path: false
-    https_redirect_status_code: 426
-    path_handling: v0
-- name: threads
-  host: httpbin.org
-  tags: [ ns.$NS ]
-  port: 8000
-  protocol: https
-  retries: 0
-  routes:
-  - name: threads-route
-    tags: [ ns.$NS ]
-    hosts:
-    - threads.e34374-prod.apps.klab.devops.gov.bc.ca
-    paths:
-    - /api
-    methods:
-    - GET
-    strip_path: false
-    https_redirect_status_code: 426
-    path_handling: v0
-- name: users
-  host: httpbin.org
-  tags: [ ns.$NS ]
-  port: 8000
-  protocol: https
-  retries: 0
-  routes:
-  - name: users-route
-    tags: [ ns.$NS ]
-    hosts:
-    - users.e34374-prod.apps.klab.devops.gov.bc.ca
-    paths:
-    - /api
-    methods:
-    - GET
-    strip_path: false
-    https_redirect_status_code: 426
-    path_handling: v0
+  - name: demo-microservices
+    host: demo-microservices.e34374-prod.svc
+    tags: [ ns.demo-microserv ]
+    port: 8080
+    protocol: https
+    retries: 0
+    routes:
+    - name: demo-microservices-route
+      tags: [ ns.demo-microserv ]
+      hosts: 
+      - demo-microservices.test.api.gov.bc.ca
+      paths:
+      - /posts
+      - /threads
+      - /users
+      methods:
+      - GET
+      strip_path: false
+      https_redirect_status_code: 426
+      path_handling: v0

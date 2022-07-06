@@ -190,11 +190,18 @@ Since there are 3 microservices, an API gateway config is required for routing r
 
 ### Apache Reverse Proxy Config
 
+The Apache Reverse Proxy Config is currently being deployed only to the prod namespace and is not part of CI/CD pipeline since it is a one time build and deployment.
+
 Step 1: 
 ```
-oc import-image rhscl/httpd-24-rhel7:2.4-200 --from=registry.access.redhat.com/rhscl/httpd-24-rhel7:2.4-200 --confirm
+oc -n <prod-namespace> import-image rhscl/httpd-24-rhel7:2.4-200 --from=registry.access.redhat.com/rhscl/httpd-24-rhel7:2.4-200 --confirm
 ```
 Step 2:
+```
+cd microservices/apache-reverse-proxy/openshift
+oc -n <prod-namespace>  process -f build.yaml| oc -n <prod-namespace> apply -f -
+oc -n <prod-namespace> process -f build.yaml| oc -n <prod-namespace> apply -f -
+```
 
 ## CI-CD
 
@@ -224,6 +231,20 @@ Workflow 3 – Clean : It is highly recommended to have a clean workflow to ensu
 
 - Environments in github settings for setting reviewers before deployment to dev, test and prod environments.
 
+### API Gateway Configurations
+
+In order to access the BC Gov API gateway service, the documentation provided was followed and an instance was created in the test environment. The microservices/gateway-config/sample.yaml  has the relevant configurations and the application is accessible at:
+
+```
+
+https://demo-microservices-test-api-gov-bc-ca.test.api.gov.bc.ca/posts
+
+https://demo-microservices-test-api-gov-bc-ca.test.api.gov.bc.ca/threads
+
+https://demo-microservices-test-api-gov-bc-ca.test.api.gov.bc.ca/users
+
+```
+
 ###  Overview on Github Actions Workflows
 
 - There are five workflows configured, one each for the monolith and the 3 microservices and one for a clean up. These workflows are currently triggered when a pull request is created to the main branch. In case if the pull request is updated, concurrrent runs of the workflows will be cancelled automatically
@@ -236,7 +257,6 @@ Workflow 3 – Clean : It is highly recommended to have a clean workflow to ensu
 ### Next Steps
 
 - Ideally, each github workflow should run only when changes are made to the specific folder. Github actions currently doesnt provide a direct method to do this, so work is in progress to implement this functionality.
-- Currently all three microservices are served at different endpoints, configurations are underway to obtain a single API gateway endpoint for all three microservices.
 
 Let us know if you need to see any new features through a pull request.
 
